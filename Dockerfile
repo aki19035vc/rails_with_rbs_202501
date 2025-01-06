@@ -10,4 +10,10 @@ RUN apt-get update && \
 
 WORKDIR /src
 
+COPY ./Gemfile ./Gemfile.lock .
+
+RUN bundle install -j4
+
+COPY . .
+
 EXPOSE 3000
