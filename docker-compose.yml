@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      TZ: UTC
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - data-db:/var/lib/mysql
+
+  app:
+    build: .
+    image: rails_with_rbs
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/src
+      - /src/tmp/pids
+    environment:
+      - DATABASE_URL=mysql2://root:password@db/rails_with_rbs
+    depends_on:
+      - db
+    command: sh -c "rm -f tmp/pids/server.pid && bin/rails s -b 0.0.0.0 -p 3000"
+
+volumes:
+  data-db:
+    driver: local
