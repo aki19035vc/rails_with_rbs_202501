@@ -1,20 +1,27 @@
-begin
-  require 'rbs_rails/rake_task'
+require "rbs_rails/rake_task"
 
-  RbsRails::RakeTask.new do |task|
-    # If you want to avoid generating RBS for some classes, comment in it.
-    # default: nil
-    #
-    # task.ignore_model_if = -> (klass) { klass == MyClass }
+require "rbs/inline"
+require "rbs/inline/cli"
 
-    # If you want to change the rake task namespace, comment in it.
-    # default: :rbs_rails
-    # task.name = :cool_rbs_rails
+require "steep"
+require "steep/cli"
 
-    # If you want to change where RBS Rails writes RBSs into, comment in it.
-    # default: Rails.root / 'sig/rbs_rails'
-    # task.signature_root_dir = Rails.root / 'my_sig/rbs_rails'
+RbsRails::RakeTask.new
+
+namespace :rbs_inline do
+  desc "Generate rbs by rbs-inline"
+  task generate: :environment do
+    RBS::Inline::CLI.new.run([ "app", "--output=sig/rbs_inline/app", "--opt-out" ])
   end
-rescue LoadError
-  # failed to load rbs_rails. Skip to load rbs_rails tasks.
 end
+
+namespace :steep do
+  desc "Generate rbs by rbs-inline"
+  task check: :environment do
+    Steep::CLI.new(argv: [ "check", "-j2" ], stdout: $stdout, stderr: $stderr, stdin: $stdin).run.zero? ||
+      exit(1)
+  end
+end
+
+desc "Typecheck by Steep"
+task typecheck: %i[rbs_rails:all rbs_inline:generate steep:check]
