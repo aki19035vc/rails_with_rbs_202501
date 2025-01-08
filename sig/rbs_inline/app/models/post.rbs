@@ -1,0 +1,4 @@
+# Generated from app/models/post.rb with RBS::Inline
+
+class Post < ApplicationRecord
+end

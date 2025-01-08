@@ -1,0 +1,33 @@
+# Generated from app/controllers/posts_controller.rb with RBS::Inline
+
+class PostsController < ApplicationController
+  # GET /posts
+  # @rbs () -> void
+  def index: () -> void
+
+  # GET /posts/1
+  # @rbs () -> void
+  def show: () -> void
+
+  # POST /posts
+  # @rbs () -> void
+  def create: () -> void
+
+  # PATCH/PUT /posts/1
+  # @rbs () -> void
+  def update: () -> void
+
+  # DELETE /posts/1
+  # @rbs () -> void
+  def destroy: () -> void
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  # @rbs () -> void
+  def set_post: () -> void
+
+  # Only allow a list of trusted parameters through.
+  # @rbs () -> Hash[Symbol, untyped]
+  def post_params: () -> Hash[Symbol, untyped]
+end
